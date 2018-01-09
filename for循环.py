@@ -1,4 +1,4 @@
-"""
+		"""
 name = "panzhiwei"
 
 for i in name:
@@ -23,6 +23,6 @@ for i in range(1,101):
 	if i%2 != 0:
 		sum2 = sum2 +i
 
-		summ = summ+i
-print("总和为:%d,偶数和为:%d,奇数和为:%d"%summ,sum1,sum2)
+	summ = summ+i
+print("和为%d\n偶数和为%d\n奇数和为%d\n"%summ,sum1,sum2)
 
