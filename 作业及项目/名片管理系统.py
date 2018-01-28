@@ -62,6 +62,7 @@ def xiugai():
 				i["体重"]=owd
 			else:
 				print("别闹")
+			
 		else:
 			print("没这人啊")
 	print(list)			
@@ -70,6 +71,8 @@ def chaxun():
 	for i in list:
 		if inquire ==i["name"]:
 			print(i)
+		else:
+			print("查无此人")
 while True:
 	oprtion = int(input("1、添加名片 2、删除名片 3、修改名片 4、查询名片 5、退出系统"))
 	if oprtion ==1:
@@ -82,5 +85,5 @@ while True:
 		chaxun()
 	if oprtion ==5:
 		break
-	else:
+	if oprtion !=1 and oprtion !=2 and oprtion !=3 and oprtion !=4 and oprtion !=5:
 		print("你确定没在逗我?")
