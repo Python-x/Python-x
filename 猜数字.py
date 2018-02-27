@@ -7,10 +7,10 @@ while count <=10:
 		if I > player:
 			print("猜的太大了，再小点")
 			continue
-		if I < player:
+		elif I < player:
 			print("猜的这么小，再大点")
 			continue
-		if I == player:
+		elif I == player:
 			print("哇，猜到了")
 			break
 count+=1	
