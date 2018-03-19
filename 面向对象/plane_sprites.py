@@ -46,7 +46,7 @@ class Enemy(PlaneGame):
 
         # 设置敌机的随机初始速度
 
-        self.speed = random.randint(5, 8)
+        self.speed = random.randint(3, 5)
 
         # 设置敌机的随机初始位置
 
@@ -83,7 +83,7 @@ class Hero(PlaneGame):
         super().__init__("./images/me1.png", 0)
 
         # 给英雄设置一个初始位置
-        self.rect.centerx = SCREEN_RECT.centerx + 123
+        self.rect.centerx = SCREEN_RECT.centerx - 123
         self.rect.bottom = SCREEN_RECT.height - 120
         self.speed1 = 0
         # 创建一个子弹的精灵
@@ -131,7 +131,7 @@ class Hero(PlaneGame):
 class Hero2(PlaneGame):
     def __init__(self):
         super().__init__("./images/me2.png", 0)
-        self.rect.centerx = SCREEN_RECT.centerx - 123
+        self.rect.centerx = SCREEN_RECT.centerx + 123
         self.rect.bottom = SCREEN_RECT.height - 120
         self.speed1 = 0
         self.bullets = pygame.sprite.Group()

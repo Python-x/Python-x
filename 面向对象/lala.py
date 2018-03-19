@@ -27,7 +27,7 @@ class PlaneGame(pygame.sprite.Sprite):
 
 class Background(PlaneGame):
     def __init__(self, is_alt=False):
-        super().__init__("./images/横向的背景.png")
+        super().__init__("./images/横向的背景.png",2)
         if is_alt:
             self.rect.left = SCREEN_RECT.width
 
@@ -57,6 +57,7 @@ class Enemy(PlaneGame):
 
     def update(self):
         panduan = random.randint(0, 2)
+        print(panduan)
         if panduan == 0:
             # 调用父类的方法 让敌机在垂直方向运动
             super().update()

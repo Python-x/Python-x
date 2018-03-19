@@ -2,6 +2,7 @@ import pygame
 import random
 from plane_sprites import *
 
+
 class Game(object):
     @staticmethod
     def __game_over():
@@ -21,13 +22,16 @@ class Game(object):
         pygame.time.set_timer(CREATE_ENEMY_EVENT, 500)
         # 每隔0.5秒发射一个子弹
         pygame.time.set_timer(HERO_FIRE_EVENT, 500)
-
+        self.wanjia1 = 0
+        self.wanjia2 = 0
+        
         # 创建精灵
+
     def __create_sprites(self):
         bg1 = Background()
         bg2 = Background(True)
         bg2.rect.y = -bg2.rect.height
-        
+
         # 背景组
         self.back_group = pygame.sprite.Group(bg1, bg2)
         # 英雄组
@@ -48,6 +52,7 @@ class Game(object):
             self.__check_collide()
             # 更新精灵组
             self.__update_sprites()
+            self.print_score()
             # 更新屏幕刷新
             pygame.display.update()
     # 事件监听
@@ -65,7 +70,7 @@ class Game(object):
             elif event.type == HERO_FIRE_EVENT:
                 self.hero.fire()
                 self.hero2.fire()
-
+            
             key_pressed = pygame.key.get_pressed()
             key_pressed1 = pygame.key.get_pressed()
             key_pressed2 = pygame.key.get_pressed()
@@ -73,43 +78,43 @@ class Game(object):
             # self.hero.fire()
             if key_pressed[pygame.K_RIGHT]:
                 print("向右边移动")
-                self.hero.speed = 8
+                self.hero.speed = 6
 
             elif key_pressed[pygame.K_LEFT]:
-                self.hero.speed = -8
+                self.hero.speed = -6
                 print("向左边移动")
             else:
                 self.hero.speed = 0
 
             if key_pressed[pygame.K_UP]:
-                self.hero.speed1 = -8
+                self.hero.speed1 = -6
                 print("向上移动")
             elif key_pressed[pygame.K_DOWN]:
-                self.hero.speed1 = 8
+                self.hero.speed1 = 6
                 print("向下移动")
 
             else:
-                
+
                 self.hero.speed1 = 0
             # if key_pressed1[pygame.K_j]:
                 # self.hero2.fire()
             if key_pressed1[pygame.K_a]:
-                self.hero2.speed = -8
+                self.hero2.speed = -6
 
             elif key_pressed1[pygame.K_d]:
-                self.hero2.speed = 8
+                self.hero2.speed = 6
 
             else:
                 self.hero2.speed = 0
 
             if key_pressed1[pygame.K_s]:
-                self.hero2.speed1 = 8
+                self.hero2.speed1 = 6
 
             elif key_pressed1[pygame.K_w]:
-                self.hero2.speed1 = -8
+                self.hero2.speed1 = -6
 
             else:
-                
+
                 self.hero2.speed1 = 0
                 #self.hero2.speed = 0
                 #self.hero2.speed1 = 0
@@ -125,24 +130,31 @@ class Game(object):
             if key_pressed2[pygame.K_KP1]:
                 music1.stop_music()
 
-            if key_pressed2[pygame.K_KP3]:
+            if key_pressed2[pygame.K_BACKSPACE]:
+                music1.int1+=1
                 music1.pause_music()
+            # if key_pressed2[pygame.K_KP3]:
+            #     music1.pause_music()
 
-            if key_pressed2[pygame.K_KP0]:
-                music1.unpause_music()
+            # if key_pressed2[pygame.K_KP0]:
+            #     music1.unpause_music()
 
-            if key_pressed2[pygame.K_KP6]:
+            if key_pressed2[pygame.K_RSHIFT]:
                 music1.next_music()
     # 碰撞监测
 
     def __check_collide(self):
         # 子弹摧毁飞机
-        pygame.sprite.groupcollide(
-            self.enemy_group, self.hero.bullets, True, True)
+        # pygame.sprite.groupcollide(
+        #     self.enemy_group, self.hero.bullets, True, True)
+        if pygame.sprite.groupcollide(self.enemy_group, self.hero.bullets, True, True):
+            self.wanjia1 += 1
         # pygame.sprite.groupcollide(
         # self.hero1.bullets, self.enemy_group, True, True)
-        pygame.sprite.groupcollide(
-            self.hero2.bullets, self.enemy_group, True, True)
+        # pygame.sprite.groupcollide(
+        #     self.hero2.bullets, self.enemy_group, True, True)
+        if pygame.sprite.groupcollide(self.hero2.bullets, self.enemy_group, True, True):
+            self.wanjia2 += 1
         # 英雄撞到敌机
         enemies = pygame.sprite.spritecollide(
             self.hero, self.enemy_group, False, False)
@@ -173,40 +185,57 @@ class Game(object):
         for group in [self.back_group, self.enemy_group, self.hero.bullets, self.hero_group, self.hero2.bullets, self.hero2_group]:
             group.update()
             group.draw(self.screen)
+
+    def print_score(self):
+        pygame.font.init()
+        # 位置
+        pos1 = (100, 0)
+        pos2 = (240, 0)
+        # 颜色
+        color = (0, 0, 0)
+        text1 = "player1:" + str(self.wanjia1)
+        text2 = "player2:" + str(self.wanjia2)
+        # 字体?
+        cur_font = pygame.font.SysFont("楷体", 30)
+        text_fort1 = cur_font.render(text1, 1, color)
+        text_font2 = cur_font.render(text2, 1, color)
+        self.screen.blit(text_fort1, pos1)
+        self.screen.blit(text_font2, pos2)
+
+
 class Music(Game):
     def __init__(self):
-        self.name_list = ["./images/流派未月亭 - 雅舞.mp3","./images/马阿俊 - 口说无凭事实为证.mp3","./images/英雄联盟 - Ekko.mp3"]
-        
-        
+        self.name_list = ["./images/流派未月亭 - 雅舞.mp3",
+                          "./images/马阿俊 - 口说无凭事实为证.mp3", "./images/英雄联盟 - Ekko.mp3"]
+        self.int1 = 2
         self.stop = pygame.mixer.music.stop()
         self.pause = pygame.mixer.music.pause()
         self.unpause = pygame.mixer.music.unpause()
-        self.i = random.randint(0, len(self.name_list)-1)
+        self.i = random.randint(0, len(self.name_list) - 1)
     # def load_music(self):
     #     i = random.randint(0, len(self.name_list))
     #     self.load(i)
 
     def pause_music(self):
-        pygame.mixer.music.pause()
-
-    def unpause_music(self):
-        pygame.mixer.music.unpause()
+        if self.int1 % 2 !=0:
+            pygame.mixer.music.pause()
+        elif self.int1 %2 == 0:
+            pygame.mixer.music.unpause()
 
     def stop_music(self):
         pygame.mixer.music.stop()
 
     def next_music(self):
         pygame.mixer.music.stop()
-        
+
         p = random.randint(0, len(music1.name_list) - 1)
         pygame.mixer.music.load(music1.name_list[p])
-        pygame.mixer.music.play()    
+        pygame.mixer.music.play()
 
 
 pygame.mixer.init()
 music1 = Music()
-i = random.randint(0, len(music1.name_list)-1)
-print("6666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666")
+i = random.randint(0, len(music1.name_list) - 1)
 pygame.mixer.music.load(music1.name_list[i])
 pygame.mixer.music.play()
 
@@ -216,5 +245,7 @@ if __name__ == '__main__':
 
     game.play_game()
 
-    o = random.randint(0, len(music1.name_list)-1)
+    
+
+    o = random.randint(0, len(music1.name_list) - 1)
     pygame.mixer.music.queue(music1.name_list[o])
