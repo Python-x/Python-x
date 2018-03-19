@@ -1,7 +1,7 @@
 import pygame
 import random
 # 游戏屏幕的大小
-SCREEN_RECT = pygame.Rect(0, 0, 480, 700)
+SCREEN_RECT = pygame.Rect(0, 0, 700, 480)
 # 敌机的定时器事件常量
 CREATE_ENEMY_EVENT = pygame.USEREVENT
 
@@ -27,14 +27,14 @@ class PlaneGame(pygame.sprite.Sprite):
 
 class Background(PlaneGame):
     def __init__(self, is_alt=False):
-        super().__init__("./images/background.png")
+        super().__init__("./images/横向的背景.png")
         if is_alt:
-            self.rect.y = -self.rect.height
+            self.rect.x = SCREEN_RECT.width
 
     def update(self):
         super().update()
-        if self.rect.y == SCREEN_RECT.height:
-            self.rect.y = -self.rect.height
+        if self.rect.x == -SCREEN_RECT.width:
+            self.rect.x = SCREEN_RECT.width
 
 
 class Enemy(PlaneGame):
@@ -42,7 +42,7 @@ class Enemy(PlaneGame):
 
     def __init__(self):
         # 调用父类的方法,创建敌机精灵,并且指定地基的图像
-        super().__init__("./images/enemy1.png")
+        super().__init__("./images/横向的敌机.png")
 
         # 设置敌机的随机初始速度
 
@@ -50,10 +50,10 @@ class Enemy(PlaneGame):
 
         # 设置敌机的随机初始位置
 
-        self.rect.bottom = 0
+        self.rect.left = SCREEN_RECT.width
 
-        max_x = SCREEN_RECT.width - self.rect.width
-        self.rect.x = random.randint(0, max_x)
+        max_x = SCREEN_RECT.height - self.rect.height
+        self.rect.y = random.randint(0, max_x)
 
     def update(self):
         panduan = random.randint(0, 2)
@@ -61,14 +61,14 @@ class Enemy(PlaneGame):
             # 调用父类的方法 让敌机在垂直方向运动
             super().update()
         elif panduan == 1:
-            self.rect.y += self.speed
-            self.rect.x -= self.speed
-        elif panduan == 2:
-            self.rect.y += self.speed
             self.rect.x += self.speed
+            self.rect.y -= self.speed
+        elif panduan == 2:
+        	self.rect.x += self.speed
+        	self.rect.y += self.speed
 
         # 判断是否飞出屏幕 如果是 需要将敌机从精灵组删除
-        if self.rect.y >= SCREEN_RECT.height:
+        if self.rect.x <= 0:
             self.kill()
 
     def __del__(self):
@@ -80,11 +80,11 @@ class Hero(PlaneGame):
 
     def __init__(self):
 
-        super().__init__("./images/me1.png", 0)
+        super().__init__("./images/横向的英雄.png", 0)
 
         # 给英雄设置一个初始位置
-        self.rect.centerx = SCREEN_RECT.centerx + 123
-        self.rect.bottom = SCREEN_RECT.height - 120
+        self.rect.centery = SCREEN_RECT.centery-123
+        self.rect.left = SCREEN_RECT.left + 120
         self.speed1 = 0
         # 创建一个子弹的精灵
         self.bullets = pygame.sprite.Group()
@@ -97,16 +97,16 @@ class Hero(PlaneGame):
         self.rect.y += self.speed1
 
         # 判断飞机屏幕边界
-        if self.rect.right < 0:
-            self.rect.left = SCREEN_RECT.width
+        if self.rect.left < 0:
+            self.rect.left = 0
 
-        if self.rect.left > SCREEN_RECT.right:
-            self.rect.right = 0
+        if self.rect.right > SCREEN_RECT.width:
+            self.rect.right = SCREEN_RECT.width
 
-        if self.rect.top < 0:
-            self.rect.top = 0
-        if self.rect.bottom > SCREEN_RECT.height:
-            self.rect.bottom = SCREEN_RECT.height
+        if self.rect.bottom < 0:
+            self.rect.top = SCREEN_RECT.height
+        if self.rect.top > SCREEN_RECT.height:
+            self.rect.bottom = 0
 
     def fire(self):
         print("发射子弹")

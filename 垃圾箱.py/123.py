@@ -1,5 +1,5 @@
 import pygame
-from plane_sprites import *
+from lala import *
 
 pygame.mixer.init()
 
