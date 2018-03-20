@@ -1,10 +1,14 @@
 import pygame
-from lala2 import *
+from lala import *
 
 
 
-class PanZhiWei_Game(object):
-
+class Game(object):
+    @staticmethod
+    def __game_over():
+        print("游戏结束!")
+        pygame.quit()
+        exit()
 
     def __init__(self):
         print("初始化")
@@ -21,24 +25,17 @@ class PanZhiWei_Game(object):
         self.wanjia1 = 0
         self.wanjia2 = 0
         # 创建精灵
-
-    @staticmethod
-    def __game_over():
-        print("游戏结束!")
-        
-        pygame.quit()
-        exit()
     def __create_sprites(self):
-        bg1 = PanZhiWei_Background()
-        bg2 = PanZhiWei_Background(True)
-        bg2.rect.right = 0
+        bg1 = Background()
+        bg2 = Background(True)
+        bg2.rect.x = SCREEN_RECT.right
 
         # 背景组
         self.back_group = pygame.sprite.Group(bg1, bg2)
         # 英雄组
-        self.hero = PanZhiWei_Hero()
+        self.hero = Hero()
         self.hero.rect.centery = SCREEN_RECT.centery+123
-        self.hero2 = PanZhiWei_Hero()
+        self.hero2 = Hero()
         self.hero2.rect.centery = SCREEN_RECT.centery-123
         self.hero_group = pygame.sprite.Group(self.hero)
         self.hero_group1 = pygame.sprite.Group(self.hero2)
@@ -64,12 +61,12 @@ class PanZhiWei_Game(object):
     def __event_handler(self):
 
         for event in pygame.event.get():
-            
+            print(event)
             if event.type == pygame.QUIT:
                 self.__game_over()
 
             elif event.type == CREATE_ENEMY_EVENT:
-                enemy = PanZhiWei_Enemy()
+                enemy = Enemy()
                 self.enemy_group.add(enemy)
             elif event.type == HERO_FIRE_EVENT:
                 self.hero.fire()
@@ -157,14 +154,12 @@ class PanZhiWei_Game(object):
 
         if pygame.sprite.groupcollide(self.enemy_group, self.hero.bullets, True, True):
             self.wanjia1 += 1
-            
         # pygame.sprite.groupcollide(
         # self.hero1.bullets, self.enemy_group, True, True)
         # pygame.sprite.groupcollide(
         #     self.hero2.bullets, self.enemy_group, True, True)
         if pygame.sprite.groupcollide(self.hero2.bullets, self.enemy_group, True, True):
             self.wanjia2 += 1
-            
         # 子弹摧毁飞机
         pygame.sprite.groupcollide(
             self.enemy_group, self.hero.bullets, True, True)
@@ -176,7 +171,8 @@ class PanZhiWei_Game(object):
             self.hero, self.enemy_group, False, False)
         enemies1 = pygame.sprite.spritecollide(
             self.hero2, self.enemy_group, False, False)
-        
+        print("enemies:%s" % enemies)
+        print("enemies1:%s" % enemies1)
         if len(enemies) == 1:
             # 让英雄牺牲
             print("1号战机战亡")
@@ -192,8 +188,6 @@ class PanZhiWei_Game(object):
 
         if self.hero.rect.y == -SCREEN_RECT.height and self.hero2.rect.y == -SCREEN_RECT.height:
             print("游戏结束")
-            print("英雄1的杀敌数:%d"%self.wanjia1)
-            print("英雄2的杀敌数:%d"%self.wanjia2)
             Game.__game_over()
 
     def print_score(self):
@@ -211,8 +205,6 @@ class PanZhiWei_Game(object):
         text_font2 = cur_font.render(text2, 1, color)
         self.screen.blit(text_fort1, pos1)
         self.screen.blit(text_font2, pos2)
-        # print(self.screen.blit(text_fort1, pos1))
-        # print(self.screen.blit(text_font2, pos2))
     # 更新精灵组
 
     def __update_sprites(self):
@@ -223,7 +215,7 @@ class PanZhiWei_Game(object):
 
     
 
-class PanZhiWei_Music(PanZhiWei_Game):
+class Music(Game):
     def __init__(self):
         self.name_list = ["./images/流派未月亭 - 雅舞.mp3",
                           "./images/马阿俊 - 口说无凭事实为证.mp3", "./images/英雄联盟 - Ekko.mp3"]
@@ -254,17 +246,16 @@ class PanZhiWei_Music(PanZhiWei_Game):
 
 
 pygame.mixer.init()
-music1 = PanZhiWei_Music()
+music1 = Music()
 i = random.randint(0, len(music1.name_list) - 1)
 pygame.mixer.music.load(music1.name_list[i])
 pygame.mixer.music.play()
 
 
 if __name__ == '__main__':
-    game = PanZhiWei_Game()
+    game = Game()
 
     game.play_game()
 
     o = random.randint(0, len(music1.name_list) - 1)
     pygame.mixer.music.queue(music1.name_list[o])
-

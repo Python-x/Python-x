@@ -267,4 +267,3 @@ if __name__ == '__main__':
 
     o = random.randint(0, len(music1.name_list) - 1)
     pygame.mixer.music.queue(music1.name_list[o])
-print
