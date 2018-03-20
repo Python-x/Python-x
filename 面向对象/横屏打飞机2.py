@@ -3,7 +3,7 @@ from lala2 import *
 
 
 
-class Game(object):
+class PanZhiWei_Game(object):
 
 
     def __init__(self):
@@ -29,16 +29,16 @@ class Game(object):
         pygame.quit()
         exit()
     def __create_sprites(self):
-        bg1 = Background()
-        bg2 = Background(True)
+        bg1 = PanZhiWei_Background()
+        bg2 = PanZhiWei_Background(True)
         bg2.rect.right = 0
 
         # 背景组
         self.back_group = pygame.sprite.Group(bg1, bg2)
         # 英雄组
-        self.hero = Hero()
+        self.hero = PanZhiWei_Hero()
         self.hero.rect.centery = SCREEN_RECT.centery+123
-        self.hero2 = Hero()
+        self.hero2 = PanZhiWei_Hero()
         self.hero2.rect.centery = SCREEN_RECT.centery-123
         self.hero_group = pygame.sprite.Group(self.hero)
         self.hero_group1 = pygame.sprite.Group(self.hero2)
@@ -69,7 +69,7 @@ class Game(object):
                 self.__game_over()
 
             elif event.type == CREATE_ENEMY_EVENT:
-                enemy = Enemy()
+                enemy = PanZhiWei_Enemy()
                 self.enemy_group.add(enemy)
             elif event.type == HERO_FIRE_EVENT:
                 self.hero.fire()
@@ -223,7 +223,7 @@ class Game(object):
 
     
 
-class Music(Game):
+class PanZhiWei_Music(PanZhiWei_Game):
     def __init__(self):
         self.name_list = ["./images/流派未月亭 - 雅舞.mp3",
                           "./images/马阿俊 - 口说无凭事实为证.mp3", "./images/英雄联盟 - Ekko.mp3"]
@@ -254,14 +254,14 @@ class Music(Game):
 
 
 pygame.mixer.init()
-music1 = Music()
+music1 = PanZhiWei_Music()
 i = random.randint(0, len(music1.name_list) - 1)
 pygame.mixer.music.load(music1.name_list[i])
 pygame.mixer.music.play()
 
 
 if __name__ == '__main__':
-    game = Game()
+    game = PanZhiWei_Game()
 
     game.play_game()
 

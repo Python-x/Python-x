@@ -9,7 +9,7 @@ CREATE_ENEMY_EVENT = pygame.USEREVENT
 HERO_FIRE_EVENT = pygame.USEREVENT + 1
 
 
-class PlaneGame(pygame.sprite.Sprite):
+class PanZhiWei_PlaneGame(pygame.sprite.Sprite):
     """游戏精灵的基类"""
 
     def __init__(self, new_image, new_speed=1):
@@ -25,7 +25,7 @@ class PlaneGame(pygame.sprite.Sprite):
         self.rect.x += self.speed
 
 
-class Background(PlaneGame):
+class PanZhiWei_Background(PanZhiWei_PlaneGame):
     def __init__(self, is_alt=False):
         super().__init__("./images/横向的背景.png",2)
         if is_alt:
@@ -37,7 +37,7 @@ class Background(PlaneGame):
             self.rect.right = 0
 
 
-class Enemy(PlaneGame):
+class PanZhiWei_Enemy(PanZhiWei_PlaneGame):
     """敌机精灵类"""
 
     def __init__(self):
@@ -76,7 +76,7 @@ class Enemy(PlaneGame):
         print("敌机挂掉了%s" % self.rect)
 
 
-class Hero(PlaneGame):
+class PanZhiWei_Hero(PanZhiWei_PlaneGame):
     """英雄的精灵"""
 
     def __init__(self):
@@ -114,9 +114,9 @@ class Hero(PlaneGame):
 
         for i in (1, 2):
             # 创建子弹
-            bullet = Bullet()
-            bullet1 = Bullet()
-            bullet2 = Bullet()
+            bullet = PanZhiWei_Bullet()
+            bullet1 = PanZhiWei_Bullet()
+            bullet2 = PanZhiWei_Bullet()
             # 设置子弹的位置
             bullet.rect.x = self.rect.left
             bullet.rect.centery = self.rect.centery
@@ -129,7 +129,7 @@ class Hero(PlaneGame):
             self.bullets.add(bullet, bullet1, bullet2)
 
 
-class Bullet(PlaneGame):
+class PanZhiWei_Bullet(PanZhiWei_PlaneGame):
     """子弹精灵类"""
 
     def __init__(self):
