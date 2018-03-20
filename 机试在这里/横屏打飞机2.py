@@ -1,14 +1,10 @@
 import pygame
-from lala import *
+from lala2 import *
 
 
 
 class Game(object):
-    @staticmethod
-    def __game_over():
-        print("游戏结束!")
-        pygame.quit()
-        exit()
+
 
     def __init__(self):
         print("初始化")
@@ -19,16 +15,23 @@ class Game(object):
         # 调用私有方法
         self.__create_sprites()
         # 设置定时器时间 - 每秒创建一架战机
-        pygame.time.set_timer(CREATE_ENEMY_EVENT, 400)
+        pygame.time.set_timer(CREATE_ENEMY_EVENT, 300)
         # 每隔0.5秒发射一个子弹
-        pygame.time.set_timer(HERO_FIRE_EVENT, 300)
+        pygame.time.set_timer(HERO_FIRE_EVENT, 500)
         self.wanjia1 = 0
         self.wanjia2 = 0
         # 创建精灵
+
+    @staticmethod
+    def __game_over():
+        print("游戏结束!")
+        
+        pygame.quit()
+        exit()
     def __create_sprites(self):
         bg1 = Background()
         bg2 = Background(True)
-        bg2.rect.x = SCREEN_RECT.right
+        bg2.rect.right = 0
 
         # 背景组
         self.back_group = pygame.sprite.Group(bg1, bg2)
@@ -61,7 +64,7 @@ class Game(object):
     def __event_handler(self):
 
         for event in pygame.event.get():
-            print(event)
+            
             if event.type == pygame.QUIT:
                 self.__game_over()
 
@@ -116,19 +119,19 @@ class Game(object):
                 self.hero2.speed1 = 0
 
             if key_pressed1[pygame.K_a]:
-                self.hero2.speed = -6
+                self.hero2.speed = -8
 
             elif key_pressed1[pygame.K_d]:
-                self.hero2.speed = 6
+                self.hero2.speed = 8
 
             else:
                 self.hero2.speed = 0
 
             if key_pressed1[pygame.K_s]:
-                self.hero2.speed1 = 6
+                self.hero2.speed1 = 8
 
             elif key_pressed1[pygame.K_w]:
-                self.hero2.speed1 = -6
+                self.hero2.speed1 = -8
 
             else:
 
@@ -154,12 +157,14 @@ class Game(object):
 
         if pygame.sprite.groupcollide(self.enemy_group, self.hero.bullets, True, True):
             self.wanjia1 += 1
+            
         # pygame.sprite.groupcollide(
         # self.hero1.bullets, self.enemy_group, True, True)
         # pygame.sprite.groupcollide(
         #     self.hero2.bullets, self.enemy_group, True, True)
         if pygame.sprite.groupcollide(self.hero2.bullets, self.enemy_group, True, True):
             self.wanjia2 += 1
+            
         # 子弹摧毁飞机
         pygame.sprite.groupcollide(
             self.enemy_group, self.hero.bullets, True, True)
@@ -171,8 +176,7 @@ class Game(object):
             self.hero, self.enemy_group, False, False)
         enemies1 = pygame.sprite.spritecollide(
             self.hero2, self.enemy_group, False, False)
-        print("enemies:%s" % enemies)
-        print("enemies1:%s" % enemies1)
+        
         if len(enemies) == 1:
             # 让英雄牺牲
             print("1号战机战亡")
@@ -188,6 +192,8 @@ class Game(object):
 
         if self.hero.rect.y == -SCREEN_RECT.height and self.hero2.rect.y == -SCREEN_RECT.height:
             print("游戏结束")
+            print("英雄1的杀敌数:%d"%self.wanjia1)
+            print("英雄2的杀敌数:%d"%self.wanjia2)
             Game.__game_over()
 
     def print_score(self):
@@ -205,6 +211,8 @@ class Game(object):
         text_font2 = cur_font.render(text2, 1, color)
         self.screen.blit(text_fort1, pos1)
         self.screen.blit(text_font2, pos2)
+        # print(self.screen.blit(text_fort1, pos1))
+        # print(self.screen.blit(text_font2, pos2))
     # 更新精灵组
 
     def __update_sprites(self):
@@ -259,3 +267,4 @@ if __name__ == '__main__':
 
     o = random.randint(0, len(music1.name_list) - 1)
     pygame.mixer.music.queue(music1.name_list[o])
+print
