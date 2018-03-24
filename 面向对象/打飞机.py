@@ -21,7 +21,7 @@ class Game(object):
         #设置定时器时间 - 每秒创建一架战
         pygame.time.set_timer(CREATE_ENEMY_EVENT, 500)
         # 每隔0.5秒发射一个子弹
-        pygame.time.set_timer(HERO_FIRE_EVENT, 500)
+        pygame.time.set_timer(HERO_FIRE_EVENT, 800)
         self.wanjia1 = 0
         self.wanjia2 = 0
         
@@ -139,7 +139,7 @@ class Game(object):
             # if key_pressed2[pygame.K_KP0]:
             #     music1.unpause_music()
 
-            if key_pressed2[pygame.K_RSHIFT]:
+            if key_pressed2[pygame.K_SPACE]:
                 music1.next_music()
     # 碰撞监测
 
@@ -153,7 +153,7 @@ class Game(object):
         # self.hero1.bullets, self.enemy_group, True, True)
         # pygame.sprite.groupcollide(
         #     self.hero2.bullets, self.enemy_group, True, True)
-        if pygame.sprite.groupcollide(self.hero2.bullets, self.enemy_group, True, True):
+        if pygame.sprite.groupcollide(self.enemy_group, self.hero2.bullets, True, True):
             self.wanjia2 += 1
         # 英雄撞到敌机
         enemies = pygame.sprite.spritecollide(
@@ -203,7 +203,7 @@ class Game(object):
         self.screen.blit(text_font2, pos2)
 
 
-class Music(Game):
+class Music(Game): 
     def __init__(self):
         self.name_list = ["./images/流派未月亭 - 雅舞.mp3",
                           "./images/马阿俊 - 口说无凭事实为证.mp3", "./images/英雄联盟 - Ekko.mp3"]

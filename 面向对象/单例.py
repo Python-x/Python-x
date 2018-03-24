@@ -30,6 +30,7 @@ class Son(Person):
 	def __new__(cls,*w,**q):
 		if cls.instance is None:
 			cls.instance = super().__new__(cls)
+			instance = True
 		return cls.instance
 
 	def __init__(self,name):

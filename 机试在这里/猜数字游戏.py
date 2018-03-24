@@ -26,7 +26,7 @@ class PanZhiWei_Num(object):
 				self.PanZhiWei_count1+=1
 				self.PanZhiWei_dic = {self.PanZhiWei_count1 - 1:self.PanZhiWei_count}
 				self.PanZhiWei_list.append(self.PanZhiWei_dic)
-				print(self.PanZhiWei_list)
+				
 				
 				o = int(input("请问您还要继续玩吗\n1.继续  2.退出"))
 				if o == 1:
@@ -45,3 +45,4 @@ class PanZhiWei_Num(object):
 if __name__ == "__main__":
 	panzhiwei = PanZhiWei_Num()
 	panzhiwei.PanZhiWei_cai()
+	panzhiwei

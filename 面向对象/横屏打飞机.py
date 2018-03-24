@@ -137,7 +137,7 @@ class Game(object):
             if key_pressed2[pygame.K_KP1]:
                 music1.stop_music()
 
-            if key_pressed2[pygame.K_SPACE]:
+            if key_pressed2[pygame.K_BACKSPACE]:
                 music1.int1+=1
                 music1.pause_music()
             # if key_pressed2[pygame.K_KP3]:
@@ -146,7 +146,7 @@ class Game(object):
             # if key_pressed2[pygame.K_KP0]:
             #     music1.unpause_music()
 
-            if key_pressed2[pygame.K_BACKSPACE]:
+            if key_pressed2[pygame.K_SPACE]:
                 music1.next_music()
     # 碰撞监测
 
@@ -158,7 +158,7 @@ class Game(object):
         # self.hero1.bullets, self.enemy_group, True, True)
         # pygame.sprite.groupcollide(
         #     self.hero2.bullets, self.enemy_group, True, True)
-        if pygame.sprite.groupcollide(self.hero2.bullets, self.enemy_group, True, True):
+        if pygame.sprite.groupcollide(self.enemy_group, self.hero2.bullets, True, True):
             self.wanjia2 += 1
         # 子弹摧毁飞机
         pygame.sprite.groupcollide(
